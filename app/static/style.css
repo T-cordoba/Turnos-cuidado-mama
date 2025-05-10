@@ -36,14 +36,27 @@ h1 {
 }
 
 button {
-    padding: 5px;
-    background: #1976d2;
-    color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    font-weight: bold;
+}
+
+button.reservar {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+button.cancelar {
+    background-color: #dc3545; /* Rojo */
+    color: white;
 }
 
 button:hover {
-    background: #0d47a1;
+    opacity: 0.9;
 }

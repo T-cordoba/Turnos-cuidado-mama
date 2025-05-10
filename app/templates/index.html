@@ -31,7 +31,7 @@
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
-                            <button>Cancelar</button>
+                            <button class="cancelar">Cancelar</button>
                         </form>
                     {% else %}
                         <form method="post">
@@ -39,7 +39,7 @@
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="reservar">
                             <input type="text" name="nombre" placeholder="Tu nombre" required>
-                            <button>Reservar</button>
+                            <button class="reservar">Reservar</button>
                         </form>
                     {% endif %}
                     </p>
@@ -61,14 +61,14 @@
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">
-                    <p><strong>{{ turno.capitalize() }}:</strong>
+                    <p><strong>Turno {{ turno }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
                         <form method="post">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
-                            <button>Cancelar</button>
+                            <button class="cancelar">Cancelar</button>
                         </form>
                     {% else %}
                         <form method="post">
@@ -76,7 +76,7 @@
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="reservar">
                             <input type="text" name="nombre" placeholder="Tu nombre" required>
-                            <button>Reservar</button>
+                            <button class="reservar">Reservar</button>
                         </form>
                     {% endif %}
                     </p>
