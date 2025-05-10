@@ -11,7 +11,7 @@
     <div class="calendario">
         {% for dia in dias %}
         <div class="dia">
-            <h3>{{ dia.strftime('%A %d/%m')|capitalize }}</h3>
+            <h3>{{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}</h3>
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">

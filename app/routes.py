@@ -38,6 +38,18 @@ def index():
     locale.setlocale(locale.LC_TIME, 'C')
 
     hoy = datetime.today().date()
-    dias = [hoy + timedelta(days=i) for i in range(7)]
+    dias_raw = [hoy + timedelta(days=i) for i in range(7)]
+    dias = [(dia, dia.strftime('%A')) for dia in dias_raw]
+
+    dias_traducidos = {
+        'Monday': 'Lunes',
+        'Tuesday': 'Martes',
+        'Wednesday': 'Miércoles',
+        'Thursday': 'Jueves',
+        'Friday': 'Viernes',
+        'Saturday': 'Sábado',
+        'Sunday': 'Domingo'
+    }
+
     turnos = {(t.fecha, t.tipo): t.nombre for t in Turno.query.all()}
-    return render_template('index.html', dias=dias, turnos=turnos)
+    return render_template('index.html', dias=dias, turnos=turnos, dias_traducidos=dias_traducidos)
