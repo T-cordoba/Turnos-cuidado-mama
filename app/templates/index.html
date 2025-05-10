@@ -9,6 +9,17 @@
 <body>
     <h1>Turnos de la semana</h1>
 
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="mensajes">
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
     <!-- Semana actual -->
     <h2>Semana actual</h2>
     <div class="calendario">

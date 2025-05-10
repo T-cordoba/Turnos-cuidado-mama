@@ -1,5 +1,5 @@
 import locale
-from flask import Blueprint, render_template, request, redirect, url_for, Flask, Response
+from flask import Blueprint, render_template, request, redirect, url_for, Flask, Response, flash
 from datetime import datetime, timedelta
 from .models import Turno
 from .db import db
@@ -26,11 +26,19 @@ def index():
             db.session.add(turno)
             try:
                 db.session.commit()
+                flash(f"Reserva realizada con éxito para {nombre} el {fecha.strftime('%d/%m/%Y')} en el turno {tipo}.", "success")
             except:
                 db.session.rollback()
+                flash("Ocurrió un error al realizar la reserva. Inténtalo nuevamente.", "error")
         elif action == 'cancelar':
-            Turno.query.filter_by(fecha=fecha, tipo=tipo).delete()
-            db.session.commit()
+            turno = Turno.query.filter_by(fecha=fecha, tipo=tipo).first()
+            if turno:
+                nombre = turno.nombre
+                Turno.query.filter_by(fecha=fecha, tipo=tipo).delete()
+                db.session.commit()
+                flash(f"Reserva de {nombre} cancelada con éxito para el {fecha.strftime('%d/%m/%Y')} en el turno {tipo}.", "success")
+            else:
+                flash("No se encontró la reserva para cancelar.", "error")
 
         return redirect(url_for('main.index'))
 

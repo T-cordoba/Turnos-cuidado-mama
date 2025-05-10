@@ -60,3 +60,24 @@ button.cancelar {
 button:hover {
     opacity: 0.9;
 }
+
+.mensajes {
+    margin: 20px 0;
+}
+
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert.success {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.alert.error {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
