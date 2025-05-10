@@ -8,18 +8,56 @@
 </head>
 <body>
     <h1>Turnos de la semana</h1>
+
+    <!-- Semana actual -->
+    <h2>Semana actual</h2>
     <div class="calendario">
-        {% for dia in dias %}
+        {% for dia in dias_semana_actual %}
         <div class="dia">
             <h3>
                 {% if dia[0] == hoy %}
                     Hoy, {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
-                {% elif dia[0] == mañana %}
-                    Mañana, {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
                 {% else %}
                     {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
                 {% endif %}
             </h3>
+
+            {% for turno in ['día', 'noche'] %}
+                <div class="turno">
+                    <p><strong>{{ turno.capitalize() }}:</strong>
+                    {% if (dia[0], turno) in turnos %}
+                        {{ turnos[(dia[0], turno)] }}
+                        <form method="post">
+                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
+                            <input type="hidden" name="tipo" value="{{ turno }}">
+                            <input type="hidden" name="action" value="cancelar">
+                            <button>Cancelar</button>
+                        </form>
+                    {% else %}
+                        <form method="post">
+                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
+                            <input type="hidden" name="tipo" value="{{ turno }}">
+                            <input type="hidden" name="action" value="reservar">
+                            <input type="text" name="nombre" placeholder="Tu nombre" required>
+                            <button>Reservar</button>
+                        </form>
+                    {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Separador -->
+    <hr>
+    <h2>Próxima semana</h2>
+
+    <!-- Próxima semana -->
+    <div class="calendario">
+        {% for dia in dias_proxima_semana %}
+        <div class="dia">
+            <h3>{{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}</h3>
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">

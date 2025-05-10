@@ -34,14 +34,25 @@ def index():
 
         return redirect(url_for('main.index'))
 
-
     locale.setlocale(locale.LC_TIME, 'C')
 
     hoy = datetime.today().date()
-    mañana = hoy + timedelta(days=1)
-    dias_raw = [hoy + timedelta(days=i) for i in range(7)]
-    dias = [(dia, dia.strftime('%A')) for dia in dias_raw]
+    dia_semana_hoy = hoy.weekday()  # 0 = Lunes, 6 = Domingo
 
+    # Calcular el domingo de la semana actual
+    domingo_actual = hoy + timedelta(days=(6 - dia_semana_hoy))
+
+    # Días de la semana actual (desde hoy hasta el domingo)
+    dias_semana_actual = [hoy + timedelta(days=i) for i in range((domingo_actual - hoy).days + 1)]
+
+    # Calcular el lunes y domingo de la próxima semana
+    lunes_proxima_semana = domingo_actual + timedelta(days=1)
+    domingo_proxima_semana = lunes_proxima_semana + timedelta(days=6)
+
+    # Días de la próxima semana (lunes a domingo)
+    dias_proxima_semana = [lunes_proxima_semana + timedelta(days=i) for i in range(7)]
+
+    # Traducir los días
     dias_traducidos = {
         'Monday': 'Lunes',
         'Tuesday': 'Martes',
@@ -52,5 +63,14 @@ def index():
         'Sunday': 'Domingo'
     }
 
+    # Crear turnos
     turnos = {(t.fecha, t.tipo): t.nombre for t in Turno.query.all()}
-    return render_template('index.html', dias=dias, turnos=turnos, dias_traducidos=dias_traducidos, hoy=hoy, mañana=mañana)
+
+    return render_template(
+        'index.html',
+        dias_semana_actual=[(dia, dia.strftime('%A')) for dia in dias_semana_actual],
+        dias_proxima_semana=[(dia, dia.strftime('%A')) for dia in dias_proxima_semana],
+        turnos=turnos,
+        dias_traducidos=dias_traducidos,
+        hoy=hoy
+    )
