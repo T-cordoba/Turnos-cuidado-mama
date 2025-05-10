@@ -34,10 +34,8 @@ def index():
 
         return redirect(url_for('main.index'))
 
-    try:
-        locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
-    except locale.Error:
-        locale.setlocale(locale.LC_TIME, 'C')
+
+    locale.setlocale(locale.LC_TIME, 'es_ES')
 
     hoy = datetime.today().date()
     dias = [hoy + timedelta(days=i) for i in range(7)]
