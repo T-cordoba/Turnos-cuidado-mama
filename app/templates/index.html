@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Turnos Cuidado Abuela</title>
+</head>
+<body>
+    <h1>Turnos de la semana</h1>
+    <div class="calendario">
+        {% for dia in dias %}
+        <div class="dia">
+            <h3>{{ dia.strftime('%A %d/%m')|capitalize }}</h3>
+
+            {% for turno in ['día', 'noche'] %}
+                <div class="turno">
+                    <p><strong>{{ turno.capitalize() }}:</strong>
+                    {% if (dia, turno) in turnos %}
+                        {{ turnos[(dia, turno)] }}
+                        <form method="post">
+                            <input type="hidden" name="fecha" value="{{ dia }}">
+                            <input type="hidden" name="tipo" value="{{ turno }}">
+                            <input type="hidden" name="action" value="cancelar">
+                            <button>Cancelar</button>
+                        </form>
+                    {% else %}
+                        <form method="post">
+                            <input type="hidden" name="fecha" value="{{ dia }}">
+                            <input type="hidden" name="tipo" value="{{ turno }}">
+                            <input type="hidden" name="action" value="reservar">
+                            <input type="text" name="nombre" placeholder="Tu nombre" required>
+                            <button>Reservar</button>
+                        </form>
+                    {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
