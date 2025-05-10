@@ -24,7 +24,7 @@
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">
-                    <p><strong>{{ turno.capitalize() }}:</strong>
+                    <p><strong>Turno {{ turno }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
                         <form method="post">
