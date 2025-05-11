@@ -15,6 +15,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+    # Aquí se usa la base de datos porque es necesario
     if request.method == 'POST':
         fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
         tipo = request.form['tipo']
@@ -41,8 +42,6 @@ def index():
                 flash("No se encontró la reserva para cancelar.", "error")
 
         return redirect(url_for('main.index'))
-
-    locale.setlocale(locale.LC_TIME, 'C')
 
     hoy = datetime.today().date()
     dia_semana_hoy = hoy.weekday()  # 0 = Lunes, 6 = Domingo
