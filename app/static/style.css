@@ -7,7 +7,7 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
 }
 
 .calendario {
@@ -68,18 +68,24 @@ button:hover {
     width: 100%; /* Ocupa todo el ancho de la pantalla */
     z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
     background-color: #f8f9fa; /* Fondo claro */
-    padding: 10px 20px; /* Espaciado interno */
+    padding: 10px; /* Espaciado interno */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
     text-align: center; /* Centra el texto */
     font-size: 16px; /* Tamaño de fuente */
     border-bottom: 1px solid #ddd; /* Línea inferior */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+    overflow: hidden; /* Evita que el contenido desborde */
 }
 
 .alert {
-    display: inline-block;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin: 0 5px;
+    display: inline-block; /* Asegúrate de que el mensaje se ajuste al contenido */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    margin: 5px auto; /* Centra el mensaje horizontalmente */
+    max-width: 90%; /* Asegúrate de que no se salga del ancho de la pantalla */
+    word-wrap: break-word; /* Permite que el texto se ajuste automáticamente */
+    overflow: hidden; /* Evita que el contenido desborde */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
 }
 
 .alert.success {

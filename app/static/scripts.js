@@ -66,4 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicia la animación
         requestAnimationFrame(animarScroll);
     }
+
+    // Oculta automáticamente el mensaje flash después de 5 segundos
+    const mensajes = document.querySelector('.mensajes');
+    if (mensajes) {
+        setTimeout(() => {
+            mensajes.style.transition = 'opacity 0.5s ease';
+            mensajes.style.opacity = '0';
+            setTimeout(() => mensajes.remove(), 500); // Elimina el elemento después de la transición
+        }, 5000); // 5 segundos
+    }
 });
