@@ -82,3 +82,7 @@ def index():
         dias_traducidos=dias_traducidos,
         hoy=hoy
     )
+
+@main.route('/ping')
+def ping():
+    return "pong", 200
