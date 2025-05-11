@@ -25,7 +25,7 @@
     <h2>Semana actual</h2>
     <div class="calendario">
         {% for dia in dias_semana_actual %}
-        <div class="dia">
+        <div class="dia" id="dia-{{ dia[0].strftime('%Y-%m-%d') }}">
             <h3>
                 {% if dia[0] == hoy %}
                     Hoy, {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
@@ -39,14 +39,14 @@
                     <p><strong>Turno {{ turno.capitalize() }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
-                        <form method="post">
+                        <form method="post" onsubmit="guardarPosicionScroll()">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
                             <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
                         </form>
                     {% else %}
-                        <form method="post">
+                        <form method="post" action="#dia-{{ dia[0].strftime('%Y-%m-%d') }}" onsubmit="guardarPosicionScroll()">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="reservar">
@@ -76,14 +76,14 @@
                     <p><strong>Turno {{ turno.capitalize() }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
-                        <form method="post">
+                        <form method="post" onsubmit="guardarPosicionScroll()">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
                             <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
                         </form>
                     {% else %}
-                        <form method="post">
+                        <form method="post" action="#dia-{{ dia[0].strftime('%Y-%m-%d') }}" onsubmit="guardarPosicionScroll()">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="reservar">
@@ -98,23 +98,6 @@
         {% endfor %}
     </div>
 
-    <script>
-        function confirmarCancelacion(turno, nombre, fecha, boton) {
-            Swal.fire({
-                title: '¿Confirmar cancelación?',
-                text: `¿Estás seguro de que quieres cancelar el turno de ${turno} reservado por ${nombre} para el día ${fecha}?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#28a745', // Verde
-                cancelButtonColor: '#dc3545', // Rojo
-                confirmButtonText: 'Sí, cancelar',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    boton.closest('form').submit();
-                }
-            });
-        }
-    </script>
+    <script src="/static/scripts.js"></script>
 </body>
 </html>

@@ -62,22 +62,32 @@ button:hover {
 }
 
 .mensajes {
-    margin: 20px 0;
+    position: fixed; /* Fija el mensaje en la parte superior */
+    top: 0; /* Posición en la parte superior */
+    left: 0; /* Alineado al borde izquierdo */
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    background-color: #f8f9fa; /* Fondo claro */
+    padding: 10px 20px; /* Espaciado interno */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+    text-align: center; /* Centra el texto */
+    font-size: 16px; /* Tamaño de fuente */
+    border-bottom: 1px solid #ddd; /* Línea inferior */
 }
 
 .alert {
+    display: inline-block;
     padding: 10px 15px;
-    margin-bottom: 10px;
     border-radius: 5px;
-    font-size: 14px;
+    margin: 0 5px;
 }
 
 .alert.success {
-    background-color: #28a745; /* Verde */
+    background-color: #28a745; /* Verde para éxito */
     color: white;
 }
 
 .alert.error {
-    background-color: #dc3545; /* Rojo */
+    background-color: #dc3545; /* Rojo para error */
     color: white;
 }
