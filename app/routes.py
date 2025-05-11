@@ -2,7 +2,7 @@ import locale
 from flask import Blueprint, render_template, request, redirect, url_for, Flask, Response, flash
 from datetime import datetime, timedelta
 from .models import Turno
-from .db import db
+from .db import db, ping_db
 
 app = Flask(__name__)
 
@@ -15,7 +15,13 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    # Aquí se usa la base de datos porque es necesario
+    # Realiza un ping a la base de datos antes de cualquier operación
+    try:
+        ping_db()  # Intenta conectar con la base de datos
+    except RuntimeError as e:
+        flash("No se pudo conectar con la base de datos. Inténtalo más tarde.", "error")
+        return render_template('error.html', error_message=str(e))
+
     if request.method == 'POST':
         fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
         tipo = request.form['tipo']
