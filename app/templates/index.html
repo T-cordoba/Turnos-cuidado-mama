@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
     <title>Turnos Cuidado Mamá</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <h1>Turnos de la semana</h1>
@@ -35,14 +36,14 @@
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">
-                    <p><strong>Turno {{ turno }}:</strong>
+                    <p><strong>Turno {{ turno.capitalize() }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
                         <form method="post">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
-                            <button class="cancelar">Cancelar</button>
+                            <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
                         </form>
                     {% else %}
                         <form method="post">
@@ -72,14 +73,14 @@
 
             {% for turno in ['día', 'noche'] %}
                 <div class="turno">
-                    <p><strong>Turno {{ turno }}:</strong>
+                    <p><strong>Turno {{ turno.capitalize() }}:</strong>
                     {% if (dia[0], turno) in turnos %}
                         {{ turnos[(dia[0], turno)] }}
                         <form method="post">
                             <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
                             <input type="hidden" name="tipo" value="{{ turno }}">
                             <input type="hidden" name="action" value="cancelar">
-                            <button class="cancelar">Cancelar</button>
+                            <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
                         </form>
                     {% else %}
                         <form method="post">
@@ -96,5 +97,24 @@
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        function confirmarCancelacion(turno, nombre, fecha, boton) {
+            Swal.fire({
+                title: '¿Confirmar cancelación?',
+                text: `¿Estás seguro de que quieres cancelar el turno de ${turno} reservado por ${nombre} para el día ${fecha}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745', // Verde
+                cancelButtonColor: '#dc3545', // Rojo
+                confirmButtonText: 'Sí, cancelar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    boton.closest('form').submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
