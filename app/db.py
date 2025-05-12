@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text  # Importa text para consultas SQL explícitas
+from sqlalchemy.exc import OperationalError
+from time import sleep
 import time
 
 db = SQLAlchemy()
@@ -7,19 +9,17 @@ db = SQLAlchemy()
 def init_db(app):
     db.init_app(app)
 
-def ping_db(max_retries=3, delay=5):
+def ping_db(max_retries=3, delay=2):
     """
-    Intenta conectar con la base de datos hasta `max_retries` veces.
-    :param max_retries: Número máximo de intentos.
-    :param delay: Tiempo en segundos entre intentos.
+    Verifica si la base de datos está activa. Si está suspendida, intenta reconectarse.
     """
-    for attempt in range(max_retries):
+    for intento in range(max_retries):
         try:
-            # Usa text() para declarar explícitamente la consulta SQL
-            db.session.execute(text('SELECT 1'))
-            return  # Si tiene éxito, salir de la función
-        except Exception as e:
-            if attempt < max_retries - 1:
-                time.sleep(delay)  # Espera antes de reintentar
-            else:
-                raise RuntimeError(f"Error al conectar con la base de datos después de {max_retries} intentos: {e}")
+            # Realiza una consulta simple para verificar la conexión
+            db.session.execute(text('SELECT 1'))  # Usa text() para envolver la consulta
+            return True  # Conexión exitosa
+        except OperationalError:
+            print(f"Intento {intento + 1} de {max_retries}: La base de datos está suspendida. Reintentando...")
+            sleep(delay)  # Espera antes de intentar nuevamente
+    # Si todos los intentos fallan, lanza un RuntimeError
+    raise RuntimeError("No se pudo establecer conexión con la base de datos después de varios intentos.")
