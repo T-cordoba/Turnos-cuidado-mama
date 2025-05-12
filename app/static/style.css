@@ -97,3 +97,34 @@ button:hover {
     background-color: #dc3545; /* Rojo para error */
     color: white;
 }
+
+.alerta-urgente {
+    background-color: #ffc107; /* Amarillo */
+    color: #212529;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.alerta-completa {
+    background-color: #28a745; /* Verde */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.alerta-urgente ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alerta-urgente li {
+    font-size: 16px;
+    margin: 5px 0;
+}

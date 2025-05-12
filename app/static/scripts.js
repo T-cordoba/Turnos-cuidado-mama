@@ -15,7 +15,7 @@ function confirmarCancelacion(turno, nombre, fecha, boton) {
     });
 }
 
-// Verifica si hay un ancla en la URL
+// Verifica si hay un ancla en la URL (para reservas)
 const ancla = window.location.hash;
 if (ancla) {
     const elemento = document.querySelector(ancla);
@@ -24,12 +24,12 @@ if (ancla) {
     }
 }
 
-// Guarda la posición del scroll en localStorage
+// Guarda la posición del scroll en localStorage (para reservas)
 function guardarPosicionScroll() {
     localStorage.setItem('posicionScroll', window.scrollY);
 }
 
-// Restaura la posición del scroll al cargar la página con animación
+// Restaura la posición del scroll al cargar la página con animación (para reservas)
 document.addEventListener('DOMContentLoaded', () => {
     const posicionScroll = localStorage.getItem('posicionScroll');
     if (posicionScroll) {
@@ -75,5 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
             mensajes.style.opacity = '0';
             setTimeout(() => mensajes.remove(), 500); // Elimina el elemento después de la transición
         }, 5000); // 5 segundos
+    }
+
+    // Detecta si se realizó una cancelación y hace scroll al inicio
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('scrollToTop') === 'true') {
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Hace scroll al inicio de la página
+        }, 100); // Pequeño retraso para evitar conflictos
     }
 });

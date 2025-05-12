@@ -21,6 +21,22 @@
     {% endif %}
     {% endwith %}
 
+    <!-- Turnos urgentes -->
+    {% if turnos_faltantes %}
+    <div class="alerta-urgente">
+        <h2>¡Turnos urgentes por cubrir!</h2>
+        <ul>
+            {% for turno in turnos_faltantes %}
+            <li>Turno {{ turno.tipo }} el {{ turno.dia }} {{ turno.fecha }} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <div class="alerta-completa">
+        <h2>¡Todos los turnos están cubiertos para los próximos 3 días!</h2>
+    </div>
+    {% endif %}
+
     <!-- Semana actual -->
     <h2>Semana actual</h2>
     <div class="calendario">
