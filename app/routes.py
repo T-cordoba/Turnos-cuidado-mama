@@ -15,12 +15,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    # Realiza un ping a la base de datos antes de cualquier operación
-    try:
-        ping_db()  # Intenta conectar con la base de datos
-    except RuntimeError as e:
-        flash("No se pudo conectar con la base de datos. Inténtalo más tarde.", "error")
-        return render_template('error.html', error_message=str(e))
+    # Verifica la conexión con la base de datos
+    ping_db()  # Reintenta automáticamente hasta que la base de datos esté disponible
 
     if request.method == 'POST':
         fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
