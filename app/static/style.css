@@ -128,3 +128,17 @@ button:hover {
     font-size: 16px;
     margin: 5px 0;
 }
+
+/* Estilo para días pasados */
+.dia-pasado {
+    color: #999;
+    font-style: italic;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Estilo para la semana actual */
+h2:contains("Semana actual") {
+    color: #28a745;
+    font-weight: bold;
+}

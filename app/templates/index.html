@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <h1>Turnos de la semana</h1>
+    <h1>Turnos de cuidado</h1>
 
     <!-- Mensajes Flash -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -27,7 +27,7 @@
         <h2>¡Turnos urgentes por cubrir!</h2>
         <ul>
             {% for turno in turnos_faltantes %}
-            <li>Turno {{ turno.tipo }} el {{ turno.dia }} {{ turno.fecha }} </li>
+            <li>Turno {{ turno.tipo }} el {{ turno.dia }} {{ turno.fecha }}</li>
             {% endfor %}
         </ul>
     </div>
@@ -37,82 +37,52 @@
     </div>
     {% endif %}
 
-    <!-- Semana actual -->
-    <h2>Semana actual</h2>
-    <div class="calendario">
-        {% for dia in dias_semana_actual %}
-        <div class="dia" id="dia-{{ dia[0].strftime('%Y-%m-%d') }}">
-            <h3>
-                {% if dia[0] == hoy %}
-                    Hoy, {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
+    <!-- Mostrar todas las semanas del mes -->
+    {% for semana in semanas %}
+        <!-- Separador -->
+        <hr>
+        
+        {% if semana.es_semana_actual %}
+            <h2>{{ semana.titulo }} (Semana actual)</h2>
+        {% else %}
+            <h2>{{ semana.titulo }}</h2>
+        {% endif %}
+
+        <div class="calendario">
+            {% for dia in semana.dias %}
+            <div class="dia" id="dia-{{ dia[0].strftime('%Y-%m-%d') }}">
+                <h3>{{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}</h3>
+                {% if dia[0] < hoy %}
+                    <div class="dia-pasado">Día pasado</div>
                 {% else %}
-                    {{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}
+                    {% for turno in ['día', 'noche'] %}
+                        <div class="turno">
+                            <p><strong>Turno {{ turno.capitalize() }}:</strong>
+                            {% if (dia[0], turno) in turnos %}
+                                {{ turnos[(dia[0], turno)] }}
+                                <form method="post" onsubmit="guardarPosicionScroll()">
+                                    <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
+                                    <input type="hidden" name="tipo" value="{{ turno }}">
+                                    <input type="hidden" name="action" value="cancelar">
+                                    <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="#dia-{{ dia[0].strftime('%Y-%m-%d') }}" onsubmit="guardarPosicionScroll()">
+                                    <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
+                                    <input type="hidden" name="tipo" value="{{ turno }}">
+                                    <input type="hidden" name="action" value="reservar">
+                                    <input type="text" name="nombre" placeholder="Tu nombre" required>
+                                    <button class="reservar">Reservar</button>
+                                </form>
+                            {% endif %}
+                            </p>
+                        </div>
+                    {% endfor %}
                 {% endif %}
-            </h3>
-
-            {% for turno in ['día', 'noche'] %}
-                <div class="turno">
-                    <p><strong>Turno {{ turno.capitalize() }}:</strong>
-                    {% if (dia[0], turno) in turnos %}
-                        {{ turnos[(dia[0], turno)] }}
-                        <form method="post" onsubmit="guardarPosicionScroll()">
-                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
-                            <input type="hidden" name="tipo" value="{{ turno }}">
-                            <input type="hidden" name="action" value="cancelar">
-                            <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
-                        </form>
-                    {% else %}
-                        <form method="post" action="#dia-{{ dia[0].strftime('%Y-%m-%d') }}" onsubmit="guardarPosicionScroll()">
-                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
-                            <input type="hidden" name="tipo" value="{{ turno }}">
-                            <input type="hidden" name="action" value="reservar">
-                            <input type="text" name="nombre" placeholder="Tu nombre" required>
-                            <button class="reservar">Reservar</button>
-                        </form>
-                    {% endif %}
-                    </p>
-                </div>
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-
-    <!-- Separador -->
-    <hr>
-    <h2>Próxima semana</h2>
-
-    <!-- Próxima semana -->
-    <div class="calendario">
-        {% for dia in dias_proxima_semana %}
-        <div class="dia">
-            <h3>{{ dias_traducidos[dia[1]] }} {{ dia[0].strftime('%d/%m') }}</h3>
-
-            {% for turno in ['día', 'noche'] %}
-                <div class="turno">
-                    <p><strong>Turno {{ turno.capitalize() }}:</strong>
-                    {% if (dia[0], turno) in turnos %}
-                        {{ turnos[(dia[0], turno)] }}
-                        <form method="post" onsubmit="guardarPosicionScroll()">
-                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
-                            <input type="hidden" name="tipo" value="{{ turno }}">
-                            <input type="hidden" name="action" value="cancelar">
-                            <button class="cancelar" type="button" onclick="confirmarCancelacion('{{ turno }}', '{{ turnos[(dia[0], turno)] }}', '{{ dia[0].strftime('%d/%m/%Y') }}', this)">Cancelar</button>
-                        </form>
-                    {% else %}
-                        <form method="post" action="#dia-{{ dia[0].strftime('%Y-%m-%d') }}" onsubmit="guardarPosicionScroll()">
-                            <input type="hidden" name="fecha" value="{{ dia[0].strftime('%Y-%m-%d') }}">
-                            <input type="hidden" name="tipo" value="{{ turno }}">
-                            <input type="hidden" name="action" value="reservar">
-                            <input type="text" name="nombre" placeholder="Tu nombre" required>
-                            <button class="reservar">Reservar</button>
-                        </form>
-                    {% endif %}
-                    </p>
-                </div>
-            {% endfor %}
-        </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
 
     <script src="/static/scripts.js"></script>
 </body>
